@@ -1,0 +1,4 @@
+def rmsle_cv(model):
+    kf = KFold(shuffle=True, random_state=42).get_n_splits(reduced_X_train['item_description'])
+    rmse= np.sqrt(-cross_val_score(model, reduced_X_train['item_description'], reduced_y_train, scoring="neg_mean_squared_error", cv = kf))
+    return(rmse.mean())
