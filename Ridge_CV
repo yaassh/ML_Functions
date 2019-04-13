@@ -1,0 +1,21 @@
+%%time
+
+# Create 3-Fold CV
+cv = KFold(n_splits=3, shuffle=True, random_state=42)
+for train_ids, valid_ids in cv.split(reduced_Xt_train):
+    # Define LGBM Model
+    model_ridge = Ridge(solver = "lsqr", fit_intercept=True, random_state=42)
+    
+    # Fit LGBM Model
+    model_ridge.fit(reduced_Xt_train[train_ids], reduced_y_train[train_ids])
+    
+    # Predict & Evaluate Training Score
+    y_pred_train = model_ridge.predict(reduced_Xt_train[train_ids])
+    rmsle_train = get_rmsle(y_pred_train, reduced_y_train[train_ids])
+    
+    # Predict & Evaluate Validation Score
+    y_pred_valid = model_ridge.predict(reduced_Xt_train[valid_ids])
+    rmsle_valid = get_rmsle(y_pred_valid, reduced_y_train[valid_ids])
+    
+    print(f'LGBM Training RMSLE: {rmsle_train:.5f}')
+    print(f'LGBM Validation RMSLE: {rmsle_valid:.5f}')
