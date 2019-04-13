@@ -1,0 +1,1 @@
+def get_rmsle(y, pred): return np.sqrt(mean_squared_error(y, pred))
